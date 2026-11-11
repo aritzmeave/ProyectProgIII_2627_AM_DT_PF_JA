@@ -16,7 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 import domain.Sesion;
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class PanelCartelera extends JPanel {
 
@@ -37,20 +38,30 @@ public class PanelCartelera extends JPanel {
         
         tablaSesiones.addMouseListener(new MouseAdapter() {
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
+        @Override
+        public void mouseClicked(MouseEvent e) {
 
-                if (e.getClickCount() == 2) {
+            if (e.getClickCount() == 2) {
 
-                    int fila = tablaSesiones.getSelectedRow();
+                int fila = tablaSesiones.getSelectedRow();
 
-                    if (fila != -1) {
+                if (fila != -1) {
 
-                        int filaModelo = tablaSesiones.convertRowIndexToModel(fila);
+                    int filaModelo = tablaSesiones.convertRowIndexToModel(fila);
 
-                        Sesion sesion = modelo.getSesion(filaModelo);
+                    Sesion sesion = modelo.getSesion(filaModelo);
+                    VentanaButacas ventana = new VentanaButacas(sesion);
 
-                        System.out.println("Sesión seleccionada: " + sesion);
+                    ventana.addWindowListener(new WindowAdapter() {
+
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            modelo.actualizarTabla();
+                        }
+
+                    });
+
+                    ventana.setVisible(true);
 
                     }
                 }
@@ -96,7 +107,7 @@ public class PanelCartelera extends JPanel {
 
         add(scroll, BorderLayout.CENTER);
     }
-}
+
 
     public JTable getTabla() {
         return tablaSesiones;
@@ -118,3 +129,4 @@ public class PanelCartelera extends JPanel {
     public void actualizarTabla() {
         modelo.fireTableDataChanged();
     }
+}
