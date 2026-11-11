@@ -21,7 +21,7 @@ public class VentanaPrincipal<DatosParaCiness> extends JFrame {
     private JPanel panelCentral;
     private JLabel lblResumen;
     private JLabel lblReloj;
-
+ 
     public VentanaPrincipal(DatosParaCines datos) {
         this.datos = datos;
 
@@ -50,8 +50,8 @@ public class VentanaPrincipal<DatosParaCiness> extends JFrame {
         setJMenuBar(barraMenu);
 
         panelCentral = new JPanel(new BorderLayout());
-        JLabel lblAviso = new JLabel("Aqui ira la cartelera (JTable de la Persona 2)", SwingConstants.CENTER);
-        panelCentral.add(lblAviso, BorderLayout.CENTER);
+        PanelCartelera cartelera = new PanelCartelera(datos.getSesiones());
+        panelCentral.add(cartelera, BorderLayout.CENTER);
         add(panelCentral, BorderLayout.CENTER);
 
         JPanel panelInferior = new JPanel(new BorderLayout());
