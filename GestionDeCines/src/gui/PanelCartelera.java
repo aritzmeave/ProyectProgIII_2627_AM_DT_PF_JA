@@ -97,3 +97,24 @@ public class PanelCartelera extends JPanel {
         add(scroll, BorderLayout.CENTER);
     }
 }
+
+    public JTable getTabla() {
+        return tablaSesiones;
+    }
+
+    public Sesion getSesionSeleccionada() {
+
+        int fila = tablaSesiones.getSelectedRow();
+
+        if (fila == -1) {
+            return null;
+        }
+
+        int filaModelo = tablaSesiones.convertRowIndexToModel(fila);
+
+        return modelo.getSesion(filaModelo);
+    }
+
+    public void actualizarTabla() {
+        modelo.fireTableDataChanged();
+    }
