@@ -13,9 +13,9 @@ public class ModeloTablaSesiones extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
 	private String[] columnas = {
-        "Película", "Género", "Duración", "Sala",
-        "Hora", "Precio", "Ocupación"
-    };
+		    "Película", "Género", "Duración", "Clasificación",
+		    "Sala", "Hora", "Precio", "Ocupación"
+		};
 
     private List<Sesion> sesiones;
 
@@ -55,15 +55,18 @@ public class ModeloTablaSesiones extends AbstractTableModel {
                 return sesion.getPelicula().getDuracion();
 
             case 3:
-                return sesion.getSala().getNumero();
+                return sesion.getPelicula().getClasificacion();
 
             case 4:
-                return sesion.getHora();
+                return sesion.getSala().getNumero();
 
             case 5:
-                return sesion.getPrecio();
+                return sesion.getHora();
 
             case 6:
+                return sesion.getPrecio();
+
+            case 7:
                 return String.format("%.1f%%", sesion.getPorcentajeOcupacion());
 
             default:
