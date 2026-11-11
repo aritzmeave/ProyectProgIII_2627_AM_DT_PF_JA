@@ -11,7 +11,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import domain.DatosParaCines;
 
 public class VentanaPrincipal<DatosParaCiness> extends JFrame {
@@ -19,6 +20,7 @@ public class VentanaPrincipal<DatosParaCiness> extends JFrame {
 
     private DatosParaCines datos;
     private JPanel panelCentral;
+    private PanelCartelera cartelera;
     private JLabel lblResumen;
     private JLabel lblReloj;
  
@@ -28,8 +30,16 @@ public class VentanaPrincipal<DatosParaCiness> extends JFrame {
         setTitle("Gestion de Cines");
         setSize(1000, 650);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+	    addWindowListener(new WindowAdapter() {
+	
+	        @Override
+	        public void windowClosing(WindowEvent e) {
+	            confirmarSalida();
+	        }
+	    });
+	    
         JMenuBar barraMenu = new JMenuBar();
 
         JMenu menuArchivo = new JMenu("Archivo");
@@ -50,7 +60,7 @@ public class VentanaPrincipal<DatosParaCiness> extends JFrame {
         setJMenuBar(barraMenu);
 
         panelCentral = new JPanel(new BorderLayout());
-        PanelCartelera cartelera = new PanelCartelera(datos.getSesiones());
+        cartelera = new PanelCartelera(datos.getSesiones());
         panelCentral.add(cartelera, BorderLayout.CENTER);
         add(panelCentral, BorderLayout.CENTER);
 
@@ -61,7 +71,7 @@ public class VentanaPrincipal<DatosParaCiness> extends JFrame {
         panelInferior.add(lblReloj, BorderLayout.EAST);
         add(panelInferior, BorderLayout.SOUTH);
 
-        itemSalir.addActionListener(e -> System.exit(0));
+        itemSalir.addActionListener(e -> confirmarSalida());
         itemNuevaPelicula.addActionListener(e -> nuevaPelicula());
         itemAcercaDe.addActionListener(e -> acercaDe());
 
@@ -88,13 +98,36 @@ public class VentanaPrincipal<DatosParaCiness> extends JFrame {
         return datos;
     }
 
-    private void nuevaPelicula() {
-        JOptionPane.showMessageDialog(this, "Esta opción la esta haciendo la Persona 3.",
-                "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
-    }
+  private void nuevaPelicula() {
+
+      DialogoPelicula dialogo = new DialogoPelicula(this, datos);
+
+      dialogo.setVisible(true);
+
+      actualizarResumen();
+
+      if (cartelera != null) {
+          cartelera.actualizarTabla();
+      }
+  }
+    
 
     private void acercaDe() {
         JOptionPane.showMessageDialog(this, "Gestion de Cines\nProyecto de Programación III",
                 "Acerca de", JOptionPane.INFORMATION_MESSAGE);
     }
+    
+  private void confirmarSalida() {
+
+      int respuesta = JOptionPane.showConfirmDialog(
+              this,
+              "¿Seguro que quieres salir?",
+              "Confirmar salida",
+              JOptionPane.YES_NO_OPTION
+      );
+
+      if (respuesta == JOptionPane.YES_OPTION) {
+          System.exit(0);
+      }
+  }
 }
