@@ -1,205 +1,205 @@
+
 package gui;
 
+// IAG (herramienta: ChatGPT)
+// ADAPTADO (se añaden las funciones de la Persona 3)
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
 
-import domain.Clasificacion;
 import domain.DatosParaCines;
-import domain.Genero;
 import domain.Pelicula;
-import domain.Sala;
 import domain.Sesion;
 
-public class DialogoPelicula extends JDialog {
+public class VentanaPrincipal extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
     private DatosParaCines datos;
+    private JPanel panelCentral;
+    private PanelCartelera panelCartelera;
+    private JLabel lblResumen;
+    private JLabel lblReloj;
 
-    private JTextField txtTitulo;
-    private JTextField txtDirector;
-    private JTextField txtFecha;
-
-    private JSpinner spDuracion;
-
-    private JComboBox<Genero> cbGenero;
-    private JComboBox<Clasificacion> cbClasificacion;
-    private JComboBox<Sala> cbSala;
-    private JComboBox<String> cbHora;
-
-    public DialogoPelicula(JFrame padre, DatosParaCines datos) {
-
-        super(padre, "Nueva película", true);
+    public VentanaPrincipal(DatosParaCines datos) {
 
         this.datos = datos;
 
-        setSize(450, 380);
-        setLocationRelativeTo(padre);
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
+        setTitle("Gestion de Cines");
+        setSize(1000, 650);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panelCampos = new JPanel(new GridLayout(0, 2, 10, 10));
+        JMenuBar barraMenu = new JMenuBar();
 
-        txtTitulo = new JTextField();
-        txtDirector = new JTextField();
-        txtFecha = new JTextField("10/11/2026");
+        JMenu menuArchivo = new JMenu("Archivo");
 
-        spDuracion = new JSpinner(
-                new SpinnerNumberModel(120, 1, 300, 1));
+        JMenuItem itemSalir = new JMenuItem("Salir");
 
-        cbGenero = new JComboBox<>(Genero.values());
-        cbClasificacion = new JComboBox<>(Clasificacion.values());
+        menuArchivo.add(itemSalir);
 
-        cbSala = new JComboBox<>();
+        JMenu menuPeliculas = new JMenu("Peliculas");
 
-        for (Sala sala : datos.getSalas()) {
-            cbSala.addItem(sala);
-        }
+        JMenuItem itemNuevaPelicula =
+                new JMenuItem("Nueva pelicula");
 
-        cbHora = new JComboBox<>(
-                new String[] {"16:00", "19:00", "22:00"});
+        JMenuItem itemEliminarPelicula =
+                new JMenuItem("Eliminar pelicula");
 
-        panelCampos.add(new JLabel("Título:"));
-        panelCampos.add(txtTitulo);
+        menuPeliculas.add(itemNuevaPelicula);
+        menuPeliculas.add(itemEliminarPelicula);
 
-        panelCampos.add(new JLabel("Director:"));
-        panelCampos.add(txtDirector);
+        JMenu menuAyuda = new JMenu("Ayuda");
 
-        panelCampos.add(new JLabel("Duración:"));
-        panelCampos.add(spDuracion);
+        JMenuItem itemAcercaDe = new JMenuItem("Acerca de");
 
-        panelCampos.add(new JLabel("Género:"));
-        panelCampos.add(cbGenero);
+        menuAyuda.add(itemAcercaDe);
 
-        panelCampos.add(new JLabel("Clasificación:"));
-        panelCampos.add(cbClasificacion);
+        barraMenu.add(menuArchivo);
+        barraMenu.add(menuPeliculas);
+        barraMenu.add(menuAyuda);
 
-        panelCampos.add(new JLabel("Sala:"));
-        panelCampos.add(cbSala);
+        setJMenuBar(barraMenu);
 
-        panelCampos.add(new JLabel("Hora:"));
-        panelCampos.add(cbHora);
+        panelCentral = new JPanel(new BorderLayout());
 
-        panelCampos.add(new JLabel("Fecha:"));
-        panelCampos.add(txtFecha);
+        panelCartelera = new PanelCartelera(datos.getSesiones());
 
-        add(panelCampos, BorderLayout.CENTER);
+        panelCentral.add(panelCartelera, BorderLayout.CENTER);
 
-        JPanel panelBotones = new JPanel();
+        add(panelCentral, BorderLayout.CENTER);
 
-        JButton btnGuardar = new JButton("Guardar");
-        JButton btnCancelar = new JButton("Cancelar");
+        JPanel panelInferior = new JPanel(new BorderLayout());
 
-        panelBotones.add(btnGuardar);
-        panelBotones.add(btnCancelar);
+        lblResumen = new JLabel();
+        lblReloj = new JLabel();
 
-        add(panelBotones, BorderLayout.SOUTH);
+        panelInferior.add(lblResumen, BorderLayout.WEST);
+        panelInferior.add(lblReloj, BorderLayout.EAST);
 
-        btnGuardar.addActionListener(e -> guardar());
+        add(panelInferior, BorderLayout.SOUTH);
 
-        btnCancelar.addActionListener(e -> dispose());
+        itemSalir.addActionListener(e -> System.exit(0));
 
-        // Eventos de teclado
+        itemNuevaPelicula.addActionListener(
+                e -> nuevaPelicula());
 
-        KeyAdapter teclado = new KeyAdapter() {
+        itemEliminarPelicula.addActionListener(
+                e -> eliminarPeliculaSeleccionada());
+
+        itemAcercaDe.addActionListener(e -> acercaDe());
+
+        // Eliminar con la tecla Supr
+
+        panelCartelera.getTabla().addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(KeyEvent e) {
 
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    guardar();
-
-                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    dispose();
+                if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    eliminarPeliculaSeleccionada();
                 }
             }
-        };
+        });
 
-        txtTitulo.addKeyListener(teclado);
-        txtDirector.addKeyListener(teclado);
-        txtFecha.addKeyListener(teclado);
+        actualizarResumen();
+
+        HiloReloj hiloReloj = new HiloReloj(lblReloj);
+        hiloReloj.start();
     }
 
-    private void guardar() {
+    public void setCartelera(JComponent componente) {
 
-        try {
+        panelCentral.removeAll();
 
-            String titulo = txtTitulo.getText().trim();
-            String director = txtDirector.getText().trim();
+        panelCentral.add(componente, BorderLayout.CENTER);
 
-            int duracion = (Integer) spDuracion.getValue();
+        panelCentral.revalidate();
+        panelCentral.repaint();
+    }
 
-            Genero genero = (Genero) cbGenero.getSelectedItem();
+    public void actualizarResumen() {
 
-            Clasificacion clasificacion =
-                    (Clasificacion) cbClasificacion.getSelectedItem();
+        lblResumen.setText(
+                "Peliculas: " + datos.getPeliculas().size()
+                + "  |  Sesiones: " + datos.getSesiones().size()
+                + "  |  Salas: " + datos.getSalas().size());
+    }
 
-            Sala sala = (Sala) cbSala.getSelectedItem();
+    public DatosParaCines getDatos() {
+        return datos;
+    }
 
-            String hora = (String) cbHora.getSelectedItem();
+    private void nuevaPelicula() {
 
-            String fecha = txtFecha.getText().trim();
+        DialogoPelicula dialogo =
+                new DialogoPelicula(this, datos);
 
-            if (fecha.isEmpty()) {
-                throw new IllegalArgumentException(
-                        "La fecha no puede estar vacía.");
-            }
+        dialogo.setVisible(true);
 
-            int idPelicula = datos.getPeliculas().size() + 1;
-            int idSesion = datos.getSesiones().size() + 1;
+        panelCartelera.actualizarTabla();
 
-            Pelicula pelicula = new Pelicula(
-                    idPelicula,
-                    titulo,
-                    director,
-                    duracion,
-                    genero,
-                    clasificacion);
+        actualizarResumen();
+    }
 
-            double precio = 7.50;
+    private void eliminarPeliculaSeleccionada() {
 
-            if (hora.equals("22:00")) {
-                precio = 9.00;
-            }
+        Sesion sesion = panelCartelera.getSesionSeleccionada();
 
-            Sesion sesion = new Sesion(
-                    idSesion,
-                    pelicula,
-                    sala,
-                    fecha,
-                    hora,
-                    precio);
-
-            datos.getPeliculas().add(pelicula);
-            datos.getSesiones().add(sesion);
+        if (sesion == null) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Película guardada correctamente");
+                    "Selecciona una sesión");
 
-            dispose();
-
-        } catch (IllegalArgumentException ex) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    ex.getMessage(),
-                    "Datos incorrectos",
-                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        Pelicula pelicula = sesion.getPelicula();
+
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Eliminar '" + pelicula.getTitulo()
+                        + "' y todas sus sesiones?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            datos.getPeliculas().remove(pelicula);
+
+            for (int i = datos.getSesiones().size() - 1;
+                    i >= 0; i--) {
+
+                if (datos.getSesiones().get(i).getPelicula()
+                        == pelicula) {
+
+                    datos.getSesiones().remove(i);
+                }
+            }
+
+            panelCartelera.actualizarTabla();
+
+            actualizarResumen();
+        }
+    }
+
+    private void acercaDe() {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Gestion de Cines\nProyecto de Programación III",
+                "Acerca de",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }
