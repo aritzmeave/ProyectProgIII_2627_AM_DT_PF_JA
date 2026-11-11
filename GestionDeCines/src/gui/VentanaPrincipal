@@ -1,8 +1,4 @@
-
 package gui;
-
-// IAG (herramienta: ChatGPT)
-// ADAPTADO (se añaden las funciones de la Persona 3)
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
