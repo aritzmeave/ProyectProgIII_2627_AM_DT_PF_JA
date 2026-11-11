@@ -1,8 +1,6 @@
 
 package gui;
 
-// IAG (herramienta: ChatGPT)
-// ADAPTADO (al proyecto GestionDeCines)
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
