@@ -8,6 +8,7 @@ public class Pelicula {
     private int duracion;
     private Genero genero;
     private Clasificacion clasificacion;
+    private String cartel;
  
     public Pelicula(int id, String titulo, String director, int duracion,
                     Genero genero, Clasificacion clasificacion) {
@@ -17,6 +18,14 @@ public class Pelicula {
         setDuracion(duracion);
         this.genero = genero;
         this.clasificacion = clasificacion;
+    }
+
+    //IAG (herramienta: Claude)
+    //SIN CAMBIOS
+    public Pelicula(int id, String titulo, String director, int duracion,
+                    Genero genero, Clasificacion clasificacion, String cartel) {
+        this(id, titulo, director, duracion, genero, clasificacion);
+        this.cartel = cartel;
     }
  
     public int getId() {
@@ -76,6 +85,16 @@ public class Pelicula {
         this.clasificacion = clasificacion;
     }
  
+    //IAG (herramienta: Claude)
+    //SIN CAMBIOS
+    public String getCartel() {
+        return cartel;
+    }
+
+    public void setCartel(String cartel) {
+        this.cartel = cartel;
+    }
+
     @Override
     public String toString() {
         return titulo + " (" + duracion + " mins)";

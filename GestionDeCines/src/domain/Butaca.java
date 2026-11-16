@@ -1,38 +1,48 @@
 package domain;
 
 public class Butaca {
-	 private int fila;
-	    private int columna;
-	    private EstadoButaca estado;
 
-	    public Butaca(int fila, int columna) {
-	        this.fila = fila;
-	        this.columna = columna;
-	        this.estado = EstadoButaca.LIBRE;
-	    }
+    private int fila;
+    private int columna;
+    private EstadoButaca estado;
+    private boolean vip;
 
-	    public int getFila() {
-	        return fila;
-	    }
+    public Butaca(int fila, int columna) {
+        this.fila = fila;
+        this.columna = columna;
+        this.estado = EstadoButaca.LIBRE;
+    }
 
-	    public int getColumna() {
-	        return columna;
-	    }
+    public int getFila() {
+        return fila;
+    }
 
-	    public EstadoButaca getEstado() {
-	        return estado;
-	    }
+    public int getColumna() {
+        return columna;
+    }
 
-	    public void setEstado(EstadoButaca estado) {
-	        this.estado = estado;
-	    }
+    public EstadoButaca getEstado() {
+        return estado;
+    }
 
-	    public boolean isLibre() {
-	        return estado == EstadoButaca.LIBRE;
-	    }
+    public void setEstado(EstadoButaca estado) {
+        this.estado = estado;
+    }
 
-	    @Override
-	    public String toString() {
-	        return "Fila " + (fila + 1) + " - Asiento " + (columna + 1);
-	    }
-	}
+    public boolean isVip() {
+        return vip;
+    }
+
+    public void setVip(boolean vip) {
+        this.vip = vip;
+    }
+
+    public boolean isLibre() {
+        return estado == EstadoButaca.LIBRE;
+    }
+
+    @Override
+    public String toString() {
+        return "Fila " + (fila + 1) + " - Asiento " + (columna + 1);
+    }
+}

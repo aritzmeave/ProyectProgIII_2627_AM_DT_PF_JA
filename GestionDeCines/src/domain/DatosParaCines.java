@@ -26,13 +26,15 @@ public class DatosParaCines {
         return sesiones;
     }
 
+    //IAG (herramienta: Claude)
+    //ADAPTADO (añadido el nombre del archivo del cartel de cada película)
     private void crearPeliculas() {
-        peliculas.add(new Pelicula(1, "Dune: Parte Dos", "Denis Villeneuve", 166, Genero.CIENCIA_FICCION, Clasificacion.MAS_12));
-        peliculas.add(new Pelicula(2, "Del revés 2", "Kelsey Mann", 96, Genero.ANIMACION, Clasificacion.TP));
-        peliculas.add(new Pelicula(3, "Oppenheimer", "Christopher Nolan", 180, Genero.DRAMA, Clasificacion.MAS_12));
-        peliculas.add(new Pelicula(4, "Gladiator II", "Ridley Scott", 148, Genero.ACCION, Clasificacion.MAS_16));
-        peliculas.add(new Pelicula(5, "Smile 2", "Parker Finn", 127, Genero.TERROR, Clasificacion.MAS_18));
-        peliculas.add(new Pelicula(6, "Robot salvaje", "Chris Sanders", 102, Genero.ANIMACION, Clasificacion.TP));
+        peliculas.add(new Pelicula(1, "Dune: Parte Dos", "Denis Villeneuve", 166, Genero.CIENCIA_FICCION, Clasificacion.MAS_12, "dune.jpg"));
+        peliculas.add(new Pelicula(2, "Del revés 2", "Kelsey Mann", 96, Genero.ANIMACION, Clasificacion.TP, "del_reves_2.jpg"));
+        peliculas.add(new Pelicula(3, "Oppenheimer", "Christopher Nolan", 180, Genero.DRAMA, Clasificacion.MAS_12, "oppenheimer.jpg"));
+        peliculas.add(new Pelicula(4, "Gladiator II", "Ridley Scott", 148, Genero.ACCION, Clasificacion.MAS_16, "gladiator_2.jpg"));
+        peliculas.add(new Pelicula(5, "Smile 2", "Parker Finn", 127, Genero.TERROR, Clasificacion.MAS_18, "smile_2.jpg"));
+        peliculas.add(new Pelicula(6, "Robot salvaje", "Chris Sanders", 102, Genero.ANIMACION, Clasificacion.TP, "robot_salvaje.jpg"));
     }
 
     private void crearSalas() {
