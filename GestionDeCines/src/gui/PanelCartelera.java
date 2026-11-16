@@ -72,6 +72,11 @@ public class PanelCartelera extends JPanel {
         tablaSesiones.setDefaultRenderer(Object.class, renderer);
         tablaSesiones.setDefaultRenderer(Number.class, renderer);
 
+        //IAG (herramienta: Claude)
+        //SIN CAMBIOS
+        tablaSesiones.setRowHeight(RendererCartelera.ALTO_CARTEL + 25);
+        tablaSesiones.getColumnModel().getColumn(0).setPreferredWidth(150);
+
         JPanel panelBuscador = new JPanel();
 
         JLabel lblBuscar = new JLabel("Buscar película:");
